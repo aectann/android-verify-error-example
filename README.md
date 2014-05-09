@@ -33,7 +33,7 @@ public class Convertor {
 }
 ```
 
-And to actually cause a VerifyError, let's have an ancestor for `BaseGeneric`:
+And to actually cause a VerifyError, let's have a descendant for `BaseGeneric`:
 
 ```java
 public class Generic extends BaseGeneric<String> {
