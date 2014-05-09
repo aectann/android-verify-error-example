@@ -1,8 +1,14 @@
-Simple example to illustrate when VerifyError is happening. To stump on the problem one need to mess with generics:
+#Android Verify Error
+
+Simple example to illustrate when VerifyError is happening.
+
+##Problem
+
+To stump on the problem one need to mess with generics:
 
 First we'll need a parent class with generic parameter:
  
-'''java
+```java
  public class BaseGeneric<T> {
 
   T data;
@@ -43,6 +49,7 @@ Calling `Generic.assign()` anywhere in an Android application will cause a runti
 Tested on both Dalvik and ART.
 
 Dalvik stacktrace:
+
       java.lang.VerifyError: io.github.aectann.verifyerror.Generic
                   at io.github.aectann.verifyerror.MainActivity.onCreate(MainActivity.java:15)
                   at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1047)
@@ -60,6 +67,7 @@ Dalvik stacktrace:
                   at dalvik.system.NativeStart.main(Native Method)
                   
 ART stacktrace:
+
       java.lang.VerifyError: Rejecting class io.github.aectann.verifyerror.Generic because it failed compile-time verification (declaration of 'io.github.aectann.verifyerror.Generic' appears in /data/app/io.github.aectann.verifyerror-1.apk)
                   at io.github.aectann.verifyerror.MainActivity.onCreate(MainActivity.java:15)
                   at android.app.Activity.performCreate(Activity.java:5231)
@@ -75,6 +83,18 @@ ART stacktrace:
                   at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:779)
                   at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:595)
 
+##Workaround
+To avoid the problem assign return value of the generic method to a local variable first:
 
+```java
+public class GenericFixed extends BaseGeneric<String> {
+
+  public String assign() {
+    String convert = new Convertor().convert(String.class);
+    return data = convert;
+  }
+
+}
+```
 
 
